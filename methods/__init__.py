@@ -1,1 +1,6 @@
-from methods.Auth import signin, signup, passwordChecker
+from methods.Auth import (
+    publicSignin,
+    publicSignup,
+    completePublicProfile,
+    passwordChecker,
+)

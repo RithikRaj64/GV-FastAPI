@@ -1,0 +1,36 @@
+So this is my idea,
+
+I am going to create a web app and also a mobile app
+
+The web app will display the details about our app and also the demographics like before and after our app
+
+The web app will also have a login for the admins. I will have two types of admins, Super admin and Local body admins. The super admin has authority at the state level. He will be able to manage the local body admins(CRUD), they can monitor the status of each local body. The local body admins can manage their individual societies.
+
+Also i wud like to implement a time series prediction for scheduling waste pickup. This prediction will be visible in the admin dashboard.
+
+Now moving on to the mobile app, we will have three types of users: Public, Workers and Local Partners
+
+My app will have a incentive based rewarding system for recycling and proper waste disposal. Public will be rewarded with certain amount GV (A crypto token that i created).
+
+The local partners can promote their business by posting some rewards for certain amount of GV in our app. The local body admins will monitor these partners.
+
+There will also be a community (like an information sharing space) for each local body managed by each local body admin, here the daily schedule will be posted along with random tit bits about waste management. 
+
+Now coming to the workers, there are two types of workers. The supervisors and the garbage collectors. The supervisors will assign daily tasks to the collectors also when public requests a pickup he schedules it. 
+
+The collectors can login and get to know where they have collect the waste today. Along with this their primary responsibility would be rewarding the public for proper waste disposal based on the level of segregation and amount. This will be carried out in the following fashion. Each public account will have an unique QR. The collector will have a scanner in his portal. While he scans the QR of a specific public account, he can reward them. Also at the end of the day they will be required to submit todays report like the amount of tokens given and the amount of waste collected and so on. I guess this can be fed into the time series predictor for future prediction.
+
+The public will have a feedback system to address their grievances. They will be asked to provide the time and location. And based on the assignment of tasks by the supervisor, we can identify the collector responsible for this incident. 
+
+
+Now moving on to the methods of waste management:
+
+In case of Non biodegradable wastes, the collectors will take care of it.
+
+For bio degradable wastes, we will connect the manure and fertilizer companies. The supervisors will post about the availability and the companies can use it.
+
+For e waste, we can establish a marketplace
+
+For surplus food, we can connect the orphanages and charity centres to make use of it.
+
+In case of Medical waste, we will let the collectors know the location of incinerators so that they can handle it properly
