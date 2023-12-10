@@ -10,10 +10,21 @@ class Public(BaseModel):
     full_name: str
 
 
-class Collector(BaseModel):
+class Worker(BaseModel):
     employeeId: str
     password: str
+    type: str
     mobile: str
     email: Optional[str] = None
     full_name: str
+
+
+class Business(BaseModel):
+    username: str
+    password: str
+    businessName: str
+    businessType: str
     address: str
+    email: str
+    mobile: str
+    businessDescription: str

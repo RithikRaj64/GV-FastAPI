@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Functions
-from methods import publicSignup, publicSignin, completePublicProfile, passwordChecker
+from methods import passwordChecker
+from methods import publicSignup, publicSignin, completePublicProfile
+from methods import workerSignup, workerSignin, completeWorkerProfile
 
 # Schemas for data
-from schemas import PublicLogin
-from schemas import Public
+from schemas import PublicLogin, WorkerLogin
+from schemas import Public, Worker
 
 app = FastAPI()
 
@@ -22,44 +24,75 @@ app.add_middleware(
 
 
 @app.post("/auth/public/signup")
-def SU(login: PublicLogin) -> dict[str, str]:
-    if passwordChecker(login.password) is False:
+def signup1(info: PublicLogin) -> dict[str, str]:
+    if passwordChecker(info.password) is False:
         return {"status": "Password does not meet requirements"}
 
-    res: dict[str, int] = publicSignup(login)
+    res: dict[str, int] = publicSignup(info)
 
-    if res["status"] == 200:
+    if res == 200:
         return {"status": "Signup Successful"}
 
     return {"status": "Username already exists"}
 
 
 @app.post("/auth/public/completeProfile")
-def CP(info: Public) -> dict[str, str]:
+def complete1(info: Public) -> dict[str, str]:
     res: dict[str, int] = completePublicProfile(info)
 
-    if res["status"] == 200:
+    if res == 200:
         return {"status": "Profile Completed"}
 
     return {"status": "User not found"}
 
 
 @app.post("/auth/public/signin")
-def SI(login: PublicLogin) -> dict[str, str]:
-    res: dict[str, int] = publicSignin(login)
+def signin1(info: PublicLogin) -> dict[str, str]:
+    res: dict[str, int] = publicSignin(info)
 
-    if res["status"] == 200:
+    if res == 200:
         return {"status": "Login Successful"}
 
-    if res["status"] == 401:
+    if res == 401:
         return {"status": "Incorrect Password"}
 
     return {"status": "User not found"}
 
 
-@app.post("auth/collector/signup")
-def CS():
-    pass
+@app.post("/auth/worker/signup")
+def signup2(info: WorkerLogin) -> dict[str, str]:
+    if passwordChecker(info.password) is False:
+        return {"status": "Password does not meet requirements"}
+
+    res: dict[str, int] = workerSignup(info)
+
+    if res == 200:
+        return {"status": "Signup Successful"}
+
+    return {"status": "Username already exists"}
+
+
+@app.post("/auth/worker/completeProfile")
+def complete2(info: Worker) -> dict[str, str]:
+    res: dict[str, int] = completeWorkerProfile(info)
+
+    if res == 200:
+        return {"status": "Profile Completed"}
+
+    return {"status": "User not found"}
+
+
+@app.post("/auth/worker/signin")
+def signin2(info: WorkerLogin) -> dict[str, str]:
+    res: dict[str, int] = workerSignin(info)
+
+    if res == 200:
+        return {"status": "Login Successful"}
+
+    if res == 401:
+        return {"status": "Incorrect Password"}
+
+    return {"status": "User not found"}
 
 
 # name, address, phone, email(op), pic(op), familysize

@@ -1,2 +1,2 @@
-from schemas.Login import PublicLogin, CollectorLogin
-from schemas.Users import Public, Collector
+from schemas.Login import PublicLogin, WorkerLogin, BusinessLogin
+from schemas.Users import Public, Worker, Business

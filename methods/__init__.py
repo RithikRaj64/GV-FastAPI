@@ -3,4 +3,7 @@ from methods.Auth import (
     publicSignup,
     completePublicProfile,
     passwordChecker,
+    workerSignin,
+    workerSignup,
+    completeWorkerProfile,
 )

@@ -6,6 +6,11 @@ class PublicLogin(BaseModel):
     password: str
 
 
-class CollectorLogin(BaseModel):
+class WorkerLogin(BaseModel):
     employeeId: str
+    password: str
+
+
+class BusinessLogin(BaseModel):
+    username: str
     password: str
