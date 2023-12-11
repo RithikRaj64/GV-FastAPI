@@ -1,6 +1,10 @@
 # General Imports
 import re
-from typing import Literal
+from typing import List, Literal
+
+# Image handling
+from fastapi import UploadFile, File
+from PIL import Image
 
 # Database
 from mongo import client
@@ -167,3 +171,38 @@ def completeBusinessProfile(info: Business) -> Literal[404, 200]:
     )
 
     return 200
+
+
+async def uploadImages(files: list[UploadFile] = File(...)):
+    db = client["Database"]
+    # collection = db["Business"]
+
+    # create new collection to store images
+    collection = db["Images"]
+
+    for file in files:
+        # save image to database
+        collection.insert_one({"image": file.file.read()})
+
+        # save image to disk
+        # with open(file.filename, "wb") as f:
+        #     f.write(file.file.read())
+
+    return 200
+
+
+async def getImages():
+    db = client["Database"]
+    collection = db["Images"]
+
+    images = collection.find()
+
+    Img = []
+
+    for image in images:
+        with open("image.jpeg", "wb") as f:
+            f.write(image["image"])
+        Img.append(Image.open("image.jpeg"))
+
+    for img in Img:
+        img.show()

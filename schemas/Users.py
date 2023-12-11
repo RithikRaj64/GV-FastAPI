@@ -8,6 +8,7 @@ class Public(BaseModel):
     mobile: str
     email: Optional[str] = None
     full_name: str
+    # address also
 
 
 class Worker(BaseModel):
@@ -25,6 +26,10 @@ class Business(BaseModel):
     businessName: str
     businessType: str
     address: str
-    email: str
+    email: Optional[str] = None
     mobile: str
     businessDescription: str
+    # Multiple images upload
+
+
+# Rewards : Reward title, description, image, points, expiry date
