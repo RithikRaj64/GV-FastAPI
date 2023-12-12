@@ -13,6 +13,7 @@ from mongo import client
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
+from schemas import logs
 
 def publicSignup(info: PublicLogin) -> Literal[409, 200]:
     db = client["Database"]
@@ -215,4 +216,22 @@ async def bookPickup(info : BookPickupDetails):
     if user is None:
         return 404
     collection2.insert_one({"username": info.username, "datetime": info.datetime, "address": info.address})
+    return 200
+
+def viewDailyLogs() -> list[logs]:
+    db = client["Database"]
+    collection = db["DailyLogs"]
+    
+    user = list(collection.find({}))
+    return user
+
+
+async def addDailyLogs(info : logs):
+    db = client["Database"]
+    collection = db["DailyLogs"]
+    user = collection.find_one({"name":info.name})
+    if user is not None:
+        return 409
+
+    collection.insert_one({"name": info.name, "datetime": info.datetime, "amount": info.amount})
     return 200

@@ -14,12 +14,15 @@ from methods import (
 )
 from methods import bookPickup
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
+from methods import viewDailyLogs,addDailyLogs
+
 
 # Schemas for data
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
 from schemas import Reward
+from schemas import logs,logsresponse
 
 app = FastAPI()
 
@@ -193,3 +196,19 @@ async def claim_rewards(username:str, rewardId:str):
 
     if res == 200:
         return {"status": "Reward claimed successfully"}
+
+
+@app.post("/auth/dailyLogs/addLogs")
+async def add_Logs(info : logs):
+    res = await addDailyLogs(info)
+    if res==200:
+        return {"status" : "Added to Daily Logs"}
+    if res==409:
+        return {"status" : "Failed to add to Daily Logs"}
+    
+
+
+@app.post("/auth/dailyLogs/viewLogs")
+def view_Logs() -> logsresponse:
+    res =  viewDailyLogs()
+    return {"logs" : res}
