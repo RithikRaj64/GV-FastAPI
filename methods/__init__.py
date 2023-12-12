@@ -23,3 +23,11 @@ from methods.Auth import (
 from methods.Auth import (
     bookPickup
 )
+
+from methods.Reward import (
+    addReward,
+    getRewards,
+    getReward,
+    deleteReward,
+    claimRewards
+)

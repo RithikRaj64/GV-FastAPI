@@ -5,5 +5,5 @@ from decouple import config
 uri = config("MONGO_URI")
 
 # Create a new client and connect to the server
-client = MongoClient(uri, tlsAllowInvalidCertificates=True)
+client = MongoClient(uri)
 

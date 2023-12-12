@@ -13,11 +13,13 @@ from methods import (
     getImages,
 )
 from methods import bookPickup
+from methods import addReward, getRewards, getReward, deleteReward, claimRewards
 
 # Schemas for data
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
+from schemas import Reward
 
 app = FastAPI()
 
@@ -161,7 +163,33 @@ async def book_A_Pickup(info: BookPickupDetails):
     if res==404:
         return {"status":"Booking Failed"}
 
+@app.post("/rewards/add")
+async def add_rewards(info: Reward):
+    addReward(info)
+    return {"status" : "Reward added successfully"}
 
+@app.get("/rewards/view/all")
+async def view_all_rewards() -> list[Reward]:
+    return {"rewards" : getRewards()}
 
+@app.get("/rewards/view/{rewardId}")
+async def view_rewards(rewardId: str):
+    return {"reward" : getReward(rewardId)}
 
-# name, address, phone, email(op), pic(op), familysize
+@app.put("/rewards/update/{rewardId}")
+async def update_rewards(rewardId):
+    pass
+
+@app.delete("/rewards/delete/{rewardId}")
+async def delete_rewards(rewardId:str):
+    res = deleteReward(rewardId)
+
+    if res == 200:
+        return {"status": "Reward deleted successfully"}
+
+@app.post("/rewards/claim/{username}/{rewardId}")
+async def claim_rewards(username:str, rewardId:str):
+    res = claimRewards(username, rewardId)
+
+    if res == 200:
+        return {"status": "Reward claimed successfully"}
