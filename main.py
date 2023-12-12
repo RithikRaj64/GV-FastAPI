@@ -12,10 +12,12 @@ from methods import (
     uploadImages,
     getImages,
 )
+from methods import bookPickup
 
 # Schemas for data
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
+from schemas import BookPickupDetails
 
 app = FastAPI()
 
@@ -149,6 +151,17 @@ async def upload_file(files: list[UploadFile] = File(...)):
 @app.get("/auth/business/getImages")
 async def get_file():
     return await getImages()
+
+
+@app.post("/auth/public/bookPickup")
+async def book_A_Pickup(info: BookPickupDetails):
+    res=await bookPickup(info)
+    if res==200:
+        return {"status":"Booked a pickup successfully"}
+    if res==404:
+        return {"status":"Booking Failed"}
+
+
 
 
 # name, address, phone, email(op), pic(op), familysize
