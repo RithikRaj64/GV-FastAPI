@@ -19,3 +19,7 @@ from methods.Auth import (
     uploadImages,
     getImages,
 )
+
+from methods.Auth import (
+    bookPickup
+)
