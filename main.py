@@ -14,15 +14,17 @@ from methods import (
 )
 from methods import bookPickup
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
-from methods import viewDailyLogs,addDailyLogs
+from methods import viewDailyLogs, addDailyLogs
+from methods import addSchedule, getAllPosts
 
 
 # Schemas for data
-from schemas import PublicLogin, WorkerLogin, BusinessLogin
+from schemas import PublicLogin, Schedule, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
 from schemas import Reward
-from schemas import logs,logsresponse
+from schemas import logs, logsresponse
+from schemas import Post
 
 app = FastAPI()
 
@@ -160,55 +162,79 @@ async def get_file():
 
 @app.post("/auth/public/bookPickup")
 async def book_A_Pickup(info: BookPickupDetails):
-    res=await bookPickup(info)
-    if res==200:
-        return {"status":"Booked a pickup successfully"}
-    if res==404:
-        return {"status":"Booking Failed"}
+    res = await bookPickup(info)
+    if res == 200:
+        return {"status": "Booked a pickup successfully"}
+    if res == 404:
+        return {"status": "Booking Failed"}
+
 
 @app.post("/rewards/add")
 async def add_rewards(info: Reward):
     addReward(info)
-    return {"status" : "Reward added successfully"}
+    return {"status": "Reward added successfully"}
+
 
 @app.get("/rewards/view/all")
 async def view_all_rewards() -> list[Reward]:
-    return {"rewards" : getRewards()}
+    return getRewards()
+
 
 @app.get("/rewards/view/{rewardId}")
 async def view_rewards(rewardId: str):
-    return {"reward" : getReward(rewardId)}
+    return {"reward": getReward(rewardId)}
+
 
 @app.put("/rewards/update/{rewardId}")
 async def update_rewards(rewardId):
     pass
 
+
 @app.delete("/rewards/delete/{rewardId}")
-async def delete_rewards(rewardId:str):
+async def delete_rewards(rewardId: str):
     res = deleteReward(rewardId)
 
     if res == 200:
         return {"status": "Reward deleted successfully"}
 
+    return {"status": "Reward not deleted"}
+
+
 @app.post("/rewards/claim/{username}/{rewardId}")
-async def claim_rewards(username:str, rewardId:str):
+async def claim_rewards(username: str, rewardId: str):
     res = claimRewards(username, rewardId)
 
     if res == 200:
         return {"status": "Reward claimed successfully"}
 
+    return {"status": "Reward not claimed"}
+
 
 @app.post("/auth/dailyLogs/addLogs")
-async def add_Logs(info : logs):
+async def add_Logs(info: logs):
     res = await addDailyLogs(info)
-    if res==200:
-        return {"status" : "Added to Daily Logs"}
-    if res==409:
-        return {"status" : "Failed to add to Daily Logs"}
-    
+    if res == 200:
+        return {"status": "Added to Daily Logs"}
+    if res == 409:
+        return {"status": "Failed to add to Daily Logs"}
 
 
 @app.post("/auth/dailyLogs/viewLogs")
 def view_Logs() -> logsresponse:
-    res =  viewDailyLogs()
-    return {"logs" : res}
+    res = viewDailyLogs()
+    return {"logs": res}
+
+
+@app.post("/community/addSchedule")
+def addPost(info: Schedule):
+    res = addSchedule(info)
+
+    if res == 200:
+        return {"status": "Schedule added successfully"}
+
+    return {"status": "Failed to add schedule"}
+
+
+@app.get("/community/getAllPosts")
+def getAllPosts() -> list[Post]:
+    return getAllPosts()

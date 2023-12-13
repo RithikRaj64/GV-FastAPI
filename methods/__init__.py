@@ -20,14 +20,8 @@ from methods.Auth import (
     getImages,
 )
 
-from methods.Auth import (
-    bookPickup
-)
+from methods.Auth import bookPickup
 
-from methods.Reward import (
-    addReward,
-    getRewards,
-    getReward,
-    deleteReward,
-    claimRewards
-)
+from methods.Reward import addReward, getRewards, getReward, deleteReward, claimRewards
+
+from methods.Community import addSchedule, createSchedulePost, getAllPosts
