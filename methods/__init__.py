@@ -26,4 +26,10 @@ from methods.Auth import viewDailyLogs, addDailyLogs
 
 from methods.Reward import addReward, getRewards, getReward, deleteReward, claimRewards
 
-from methods.Community import addSchedule, createSchedulePost, getAllPosts
+from methods.Community import (
+    addSchedule,
+    createSchedulePost,
+    getAllPosts,
+    createPost,
+    getTodaySchedule,
+)

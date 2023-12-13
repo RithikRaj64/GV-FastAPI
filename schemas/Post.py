@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, Optional
 
 
 class Post(BaseModel):
@@ -8,5 +8,5 @@ class Post(BaseModel):
     location: dict[str, str]
     title: str
     description: str
-    image: str
-    link: str
+    image: Optional[str]
+    link: Optional[str]

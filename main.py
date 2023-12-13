@@ -15,7 +15,7 @@ from methods import (
 from methods import bookPickup
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
 from methods import viewDailyLogs, addDailyLogs
-from methods import addSchedule, getAllPosts
+from methods import addSchedule, getAllPosts, createPost, getTodaySchedule
 
 
 # Schemas for data
@@ -235,6 +235,21 @@ def addPost(info: Schedule):
     return {"status": "Failed to add schedule"}
 
 
+@app.get("/community/addPost")
+def addPost(info: Post):
+    res = createPost(info)
+
+    if res == 200:
+        return {"status": "Post added successfully"}
+
+    return {"status": "Failed to add post"}
+
+
 @app.get("/community/getAllPosts")
 def getAllPosts() -> list[Post]:
     return getAllPosts()
+
+
+@app.get("/worker/getSchedule/{date}")
+def getSchedule(date: str) -> Schedule:
+    return getTodaySchedule(date)
