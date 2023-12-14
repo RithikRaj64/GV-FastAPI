@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 
 # Functions
@@ -150,8 +150,8 @@ def signin3(info: BusinessLogin) -> dict[str, str]:
 
 # allow multiple files
 @app.post("/auth/business/upload")
-async def upload_file(file:UploadFile = File(...)):
-    await uploadImages(file)
+async def upload_file(file:UploadFile = File(...),  username: str = Form(...)):
+    await uploadImages(file, username)
     return {"status": "Upload Successful"}
 
 

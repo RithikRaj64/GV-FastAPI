@@ -4,7 +4,7 @@ from typing import List, Literal
 from io import BytesIO
 
 # Image handling
-from fastapi import UploadFile, File
+from fastapi import UploadFile, File, Form
 from PIL import Image
 
 # Database
@@ -175,17 +175,17 @@ def completeBusinessProfile(info: Business) -> Literal[404, 200]:
     return 200
 
 
-async def uploadImages(file: UploadFile = File(...)):
+async def uploadImages(file: UploadFile = File(...), username: str = Form(...)):
     db = client["Database"]
     collection = db["Business"]
 
-    business = collection.find_one({"username": "hello"})
+    business = collection.find_one({"username": username})
 
     if business is None:
         return 404
     
     collection.update_one(
-        {"username": "hello"},
+        {"username": username},
         {
             "$set": {
                 "image": file.file.read()
