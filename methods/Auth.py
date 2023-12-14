@@ -15,7 +15,7 @@ from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
 from schemas import logs
 
-def publicSignup(info: PublicLogin) -> Literal[409, 200]:
+async def publicSignup(info: PublicLogin) -> Literal[409, 200]:
     db = client["Database"]
     collection = db["Public"]
 
@@ -126,7 +126,7 @@ def completePublicProfile(info: Public) -> Literal[404, 200]:
 
 def completeWorkerProfile(info: Worker) -> Literal[404, 200]:
     db = client["Database"]
-    collection = db["Collector"]
+    collection = db["Worker"]
 
     user = collection.find_one({"employeeId": info.employeeId})
 

@@ -28,11 +28,9 @@ from schemas import Post
 
 app = FastAPI()
 
-origins = ["http://localhost:3000", "localhost:3000"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,11 +39,13 @@ app.add_middleware(
 
 # Password and confirm password validate
 @app.post("/auth/public/signup")
-def signup1(info: PublicLogin) -> dict[str, str]:
+async def signup1(info: PublicLogin) -> dict[str, str]:
     if passwordChecker(info.password) is False:
         return {"status": "Password does not meet requirements"}
 
-    res: dict[str, int] = publicSignup(info)
+    res: dict[str, int] = await publicSignup(info)
+
+    print(res)
 
     if res == 200:
         return {"status": "Signup Successful"}
