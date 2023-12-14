@@ -29,7 +29,6 @@ class Business(BaseModel):
     email: Optional[str] = None
     mobile: str
     businessDescription: str
-    # Multiple images upload
-
+    image: Optional[bytes] = None
 
 # Rewards : Reward title, description, image, points, expiry date

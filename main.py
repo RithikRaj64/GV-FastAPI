@@ -150,8 +150,8 @@ def signin3(info: BusinessLogin) -> dict[str, str]:
 
 # allow multiple files
 @app.post("/auth/business/upload")
-async def upload_file(files: list[UploadFile] = File(...)):
-    await uploadImages(files)
+async def upload_file(file:UploadFile = File(...)):
+    await uploadImages(file)
     return {"status": "Upload Successful"}
 
 

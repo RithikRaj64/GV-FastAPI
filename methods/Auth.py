@@ -1,6 +1,7 @@
 # General Imports
 import re
 from typing import List, Literal
+from io import BytesIO
 
 # Image handling
 from fastapi import UploadFile, File
@@ -174,39 +175,38 @@ def completeBusinessProfile(info: Business) -> Literal[404, 200]:
     return 200
 
 
-async def uploadImages(files: list[UploadFile] = File(...)):
+async def uploadImages(file: UploadFile = File(...)):
     db = client["Database"]
-    # collection = db["Business"]
+    collection = db["Business"]
 
-    # create new collection to store images
-    collection = db["Images"]
+    business = collection.find_one({"username": "hello"})
 
-    for file in files:
-        # save image to database
-        collection.insert_one({"image": file.file.read()})
-
-        # save image to disk
-        # with open(file.filename, "wb") as f:
-        #     f.write(file.file.read())
-
+    if business is None:
+        return 404
+    
+    collection.update_one(
+        {"username": "hello"},
+        {
+            "$set": {
+                "image": file.file.read()
+            }
+        }
+    )
+    
     return 200
 
 
 async def getImages():
     db = client["Database"]
-    collection = db["Images"]
+    collection = db["Business"]
 
-    images = collection.find()
+    business = collection.find_one({"username": "hello"})
 
-    Img = []
-
-    for image in images:
-        with open("image.jpeg", "wb") as f:
-            f.write(image["image"])
-        Img.append(Image.open("image.jpeg"))
-
-    for img in Img:
-        img.show()
+    if business is None:
+        return 404
+    
+    image = Image.open(BytesIO(business["image"])).show()
+    # return business["image"]
 
 async def bookPickup(info : BookPickupDetails):
     db = client["Database"]
