@@ -170,8 +170,8 @@ async def book_A_Pickup(info: BookPickupDetails):
 
 
 @app.post("/rewards/add")
-async def add_rewards(info: Reward):
-    addReward(info)
+async def add_rewards(file: UploadFile = File(...), info: dict[str, str | int] = Form(...)):
+    addReward(file, info)
     return {"status": "Reward added successfully"}
 
 

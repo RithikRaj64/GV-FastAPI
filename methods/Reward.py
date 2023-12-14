@@ -1,16 +1,18 @@
 from typing import Literal
+
+from fastapi import UploadFile, File, Form
 from mongo import client
 import hashlib
 
 from schemas import Reward
 
-def addReward(info: Reward) -> Literal[200]:
+def addReward(file: UploadFile = File(...), info: dict[str, str | int] = Form(...)) -> Literal[200]:
     db = client["Database"]
     collection = db["Rewards"]
 
-    id = hashlib.sha256(str(info.model_dump()).encode()).hexdigest()
+    id = hashlib.sha256(str(info).encode()).hexdigest()
 
-    collection.insert_one({"rewardId": id, "businessName": info.businessName, "name": info.name, "description": info.description, "points": info.points, "image": info.image, "redeemedBy": {}})
+    collection.insert_one({"rewardId": id, "businessName": info.businessName, "name": info.name, "description": info.description, "points": info.points, "image": file.file.read(), "redeemedBy": {}})
     return 200
 
 def getRewards() -> list[Reward]:

@@ -1,10 +1,11 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class Reward(BaseModel):
-    rewardId: str
+    rewardId: Optional[str] = None
     businessName: str
     name: str
     description: str
     points: int
-    image: str
-    redeemedBy: dict[str, int]
+    image: bytes
+    redeemedBy: Optional[dict[str, int]] = None
