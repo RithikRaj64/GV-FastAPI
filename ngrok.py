@@ -5,7 +5,7 @@ import uvicorn
 app_path = "main:app"
 
 # Start ngrok and create a tunnel to your FastAPI app
-public_url = ngrok.connect(addr="8000")
+public_url = ngrok.connect(addr="8000", subdomain="bullfrog-rich-recently.ngrok-free.app")
 
 print(public_url)
 
