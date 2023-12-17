@@ -1,8 +1,12 @@
 from typing import Literal
+from PIL import Image
 
 from fastapi import UploadFile, File, Form
+from sklearn.feature_extraction import img_to_graph
 from mongo import client
 import hashlib
+from io import BytesIO
+import base64
 
 from schemas import Reward
 
@@ -12,7 +16,13 @@ def addReward(file: UploadFile = File(...), info: dict[str, str | int] = Form(..
 
     id = hashlib.sha256(str(info).encode()).hexdigest()
 
-    collection.insert_one({"rewardId": id, "businessName": info.businessName, "name": info.name, "description": info.description, "points": info.points, "image": file.file.read(), "redeemedBy": {}})
+    buffer = BytesIO()
+
+    img = Image.open(file.file)
+    img.save(buffer, format="JPEG")
+    img_str = base64.b64encode(buffer.getvalue())
+
+    collection.insert_one({"rewardId": id, "businessName": info.businessName, "name": info.name, "description": info.description, "points": info.points, "image": img_str, "redeemedBy": {}})
     return 200
 
 def getRewards() -> list[Reward]:
@@ -20,8 +30,12 @@ def getRewards() -> list[Reward]:
     collection = db["Rewards"]
 
     rewards = list(collection.find({}))
+    Reward_list: list[Reward] = []
 
-    return rewards
+    for reward in rewards:
+        Reward_list.append(Reward(**reward))
+
+    return Reward_list
 
 def getReward(rewardId:str) -> Reward:
     db = client["Database"]
