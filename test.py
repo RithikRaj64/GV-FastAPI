@@ -40,6 +40,9 @@ df = pd.DataFrame({'date': date_range, 'amount': amounts})
 # Convert datetime to numerical representation (number of days since start_date)
 df['days_since_start'] = (df['date'] - start_date).dt.days
 
+# what will be value in days_since_start column on the christmas of 2025 but dataset has only until 2024
+# print((pd.to_datetime('2025-12-25') - start_date).days)
+
 # Prepare future dates and features
 future_dates = pd.date_range(start='2025-01-01', end='2026-01-01', freq='D')  # Adjust based on your desired prediction period
 future_days_since_start = (future_dates - start_date).days
