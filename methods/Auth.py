@@ -13,7 +13,6 @@ from mongo import client
 # Schemas
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
-from schemas import BookPickupDetails
 from schemas import logs
 
 async def publicSignup(info: PublicLogin) -> Literal[409, 200]:
@@ -208,15 +207,6 @@ async def getImages():
     image = Image.open(BytesIO(business["image"])).show()
     # return business["image"]
 
-async def bookPickup(info : BookPickupDetails):
-    db = client["Database"]
-    collection = db["Public"]
-    collection2 = db["BookPickupDetails"]
-    user = collection.find_one({"username": info.username})
-    if user is None:
-        return 404
-    collection2.insert_one({"username": info.username, "datetime": info.datetime, "address": info.address})
-    return 200
 
 async def addDailyLogs(info : logs):
     db = client["Database"]

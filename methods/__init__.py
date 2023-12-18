@@ -33,3 +33,5 @@ from methods.Community import (
     createPost,
     getTodaySchedule,
 )
+
+from methods.Pickup import bookPickup, getBookingsSuper

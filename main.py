@@ -12,16 +12,17 @@ from methods import (
     uploadImages,
     getImages,
 )
-from methods import bookPickup
+from methods import bookPickup, getBookingsSuper
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
 from methods import viewDailyLogs, addDailyLogs, getEmployeeLogs
 from methods import addSchedule, getAllPosts, createPost, getTodaySchedule
 
 
 # Schemas for data
-from schemas import PublicLogin, Schedule, WorkerLogin, BusinessLogin
+from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
+from schemas import Schedule
 from schemas import Reward
 from schemas import logs
 from schemas import Post
@@ -160,15 +161,6 @@ async def get_file():
     return await getImages()
 
 
-@app.post("/auth/public/bookPickup")
-async def book_A_Pickup(info: BookPickupDetails):
-    res = await bookPickup(info)
-    if res == 200:
-        return {"status": "Booked a pickup successfully"}
-    if res == 404:
-        return {"status": "Booking Failed"}
-
-
 @app.post("/rewards/add")
 async def add_rewards(file: UploadFile = File(...), info: dict[str, str | int] = Form(...)):
     addReward(file, info)
@@ -256,3 +248,20 @@ def getAllPosts() -> list[Post]:
 @app.get("/worker/getSchedule/{date}")
 def getSchedule(date: str) -> Schedule:
     return getTodaySchedule(date)
+
+
+@app.post("/public/bookPickup")
+async def book_A_Pickup(info: Schedule):
+    res = await bookPickup(info)
+    if res == 200:
+        return {"status": "Booked a pickup successfully"}
+    if res == 404:
+        return {"status": "Booking Failed"}
+    
+@app.get("/supervisor/getBookings")
+async def get_bookings_super():
+    return {"bookings": getBookingsSuper()}
+
+@app.get("/collector/getBookings/{employeeId}")
+async def get_bookings_collector(employeeId: str):
+    return {"bookings": getBookingsCollector(employeeId)}
