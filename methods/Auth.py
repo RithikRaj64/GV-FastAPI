@@ -56,7 +56,7 @@ def workerSignup(info: WorkerLogin) -> Literal[409, 200]:
     return 200
 
 
-def workerSignin(info: WorkerLogin) -> Literal[404, 401, 200]:
+def workerSignin(info: WorkerLogin) -> Literal[404, 401] | dict[str, str]:
     db = client["Database"]
     collection = db["Worker"]
     user = collection.find_one({"employeeId": info.employeeId})
@@ -67,7 +67,7 @@ def workerSignin(info: WorkerLogin) -> Literal[404, 401, 200]:
     if user["password"] != info.password:
         return 401
 
-    return 200
+    return {"type" : user["type"]}
 
 
 def businessSignup(info: BusinessLogin) -> Literal[409, 200]:
@@ -218,20 +218,35 @@ async def bookPickup(info : BookPickupDetails):
     collection2.insert_one({"username": info.username, "datetime": info.datetime, "address": info.address})
     return 200
 
+async def addDailyLogs(info : logs):
+    db = client["Database"]
+    collection = db["DailyLogs"]
+
+    collection.insert_one({"employeeId": info.employeeId, "datetime": info.datetime, "location": info.location, "amount": info.amount})
+    return 200
+
 def viewDailyLogs() -> list[logs]:
     db = client["Database"]
     collection = db["DailyLogs"]
     
-    user = list(collection.find({}))
-    return user
+    mongologs = list(collection.find({}))
 
+    ret = []
 
-async def addDailyLogs(info : logs):
+    for log in mongologs:
+        ret.append(logs(**log))
+
+    return ret
+
+def getEmployeeLogs(employeeId : str):
     db = client["Database"]
     collection = db["DailyLogs"]
-    user = collection.find_one({"name":info.name})
-    if user is not None:
-        return 409
+    
+    mongologs = list(collection.find({"employeeId": employeeId}))
 
-    collection.insert_one({"name": info.name, "datetime": info.datetime, "amount": info.amount})
-    return 200
+    ret = []
+
+    for log in mongologs:
+        ret.append(logs(**log))
+
+    return ret

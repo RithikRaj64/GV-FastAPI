@@ -14,7 +14,7 @@ from methods import (
 )
 from methods import bookPickup
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
-from methods import viewDailyLogs, addDailyLogs
+from methods import viewDailyLogs, addDailyLogs, getEmployeeLogs
 from methods import addSchedule, getAllPosts, createPost, getTodaySchedule
 
 
@@ -23,7 +23,7 @@ from schemas import PublicLogin, Schedule, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
 from schemas import BookPickupDetails
 from schemas import Reward
-from schemas import logs, logsresponse
+from schemas import logs
 from schemas import Post
 
 app = FastAPI()
@@ -103,13 +103,13 @@ def complete2(info: Worker) -> dict[str, str]:
 def signin2(info: WorkerLogin) -> dict[str, str]:
     res: dict[str, int] = workerSignin(info)
 
-    if res == 200:
-        return {"status": "Login Successful"}
+    if res == 404:
+        return {"status": "User not found"}
 
     if res == 401:
         return {"status": "Incorrect Password"}
 
-    return {"status": "User not found"}
+    return res
 
 
 @app.post("/auth/business/signup")
@@ -210,20 +210,23 @@ async def claim_rewards(username: str, rewardId: str):
     return {"status": "Reward not claimed"}
 
 
-@app.post("/auth/dailyLogs/addLogs")
+@app.post("/dailyLogs/add")
 async def add_Logs(info: logs):
     res = await addDailyLogs(info)
     if res == 200:
         return {"status": "Added to Daily Logs"}
-    if res == 409:
-        return {"status": "Failed to add to Daily Logs"}
 
 
-@app.post("/auth/dailyLogs/viewLogs")
-def view_Logs() -> logsresponse:
+
+@app.get("/dailyLogs/viewAll")
+def view_Logs():
     res = viewDailyLogs()
     return {"logs": res}
 
+@app.get("/dailyLogs/view/{employeeId}")
+def get_employee_logs(employeeId : str):
+    res = getEmployeeLogs(employeeId)
+    return {"logs" : res}
 
 @app.post("/community/addSchedule")
 def addPost(info: Schedule):

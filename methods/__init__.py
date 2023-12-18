@@ -22,7 +22,7 @@ from methods.Auth import (
 
 from methods.Auth import bookPickup
 
-from methods.Auth import viewDailyLogs, addDailyLogs
+from methods.Auth import viewDailyLogs, addDailyLogs, getEmployeeLogs
 
 from methods.Reward import addReward, getRewards, getReward, deleteReward, claimRewards
 

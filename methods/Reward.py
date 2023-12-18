@@ -2,7 +2,6 @@ from typing import Literal
 from PIL import Image
 
 from fastapi import UploadFile, File, Form
-from sklearn.feature_extraction import img_to_graph
 from mongo import client
 import hashlib
 from io import BytesIO

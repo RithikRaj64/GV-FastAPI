@@ -3,10 +3,8 @@ from typing import List
 
 
 class logs(BaseModel):
-    name: str
+    employeeId: str
     datetime: str
+    location: str
     amount: float
 
-
-class logsresponse(BaseModel):
-    lotOfLogs: List[logs]
