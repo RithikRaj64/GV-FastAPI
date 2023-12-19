@@ -10,7 +10,7 @@ def get_top_google_results(query: str, count: int = 5):
     URL = "https://google.serper.dev/search"
     payload = json.dumps({"q": query})
     headers = {
-        "X-API-KEY": "GOOGLE SERPER API KEY",
+        "X-API-KEY": "e352ce658cbb5bcdfa1c9806ef17a3b0018abd9f ",
         "Content-Type": "application/json",
     }
 
@@ -31,18 +31,18 @@ async def chat(data: str):
         frequency_penalty=1,
         presence_penalty=0,
         top_p=1,
-        openai_api_key="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",
+        openai_api_key="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",
     )
-    tools: List[BaseTool] = load_tools(["google-serper"], llm=llm)
+    tools: List[BaseTool] = load_tools(["google-serper"], llm=llm, serper_api_key="e352ce658cbb5bcdfa1c9806ef17a3b0018abd9f")
     agent: AgentExecutor = initialize_agent(
         tools=tools,
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
     )
-    template = """I have following doubts in waste management. """
+    template = """Answer only if query is related to waste management. Or just say NO. The query is """
 
-    response: str = agent.run(data.content + template)
+    response: str = agent.run(data + template)
 
     references = get_top_google_results(data)
 

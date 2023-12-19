@@ -287,8 +287,8 @@ async def get_bookings_super_date(date: str):
 async def get_bookings_collector(employeeId: str):
     res = await getBookingsCollector(employeeId)
     return {"bookings": res}
-
+  
 @app.post("/chatbot") 
-async def chatbot(query : str):
-    res = await chat(query)
+async def chatbot(info : dict[str, str]):
+    res = await chat(info["query"])
     return res
