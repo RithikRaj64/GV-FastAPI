@@ -12,7 +12,7 @@ from methods import (
     uploadImages,
     getImages,
 )
-from methods import bookPickup, getBookingsSuper
+from methods import bookPickup, getBookingsSuper, assignBooking, getBookingsCollector
 from methods import addReward, getRewards, getReward, deleteReward, claimRewards
 from methods import viewDailyLogs, addDailyLogs, getEmployeeLogs
 from methods import addSchedule, getAllPosts, createPost, getTodaySchedule
@@ -21,7 +21,6 @@ from methods import addSchedule, getAllPosts, createPost, getTodaySchedule
 # Schemas for data
 from schemas import PublicLogin, WorkerLogin, BusinessLogin
 from schemas import Public, Worker, Business
-from schemas import BookPickupDetails
 from schemas import Schedule
 from schemas import Reward
 from schemas import logs
@@ -264,7 +263,24 @@ async def get_bookings_super():
     print(res)
     return {"bookings": res}
 
-#  hello
-# @app.get("/collector/getBookings/{employeeId}")
-# async def get_bookings_collector(employeeId: str):
-#     return {"bookings": getBookingsCollector(employeeId)}
+@app.post("/supervisor/assignBooking/{bookingId}/{employeeId}")
+async def assign_booking(bookingId: str, employeeId: str):
+    res = await assignBooking(bookingId, employeeId)
+    if res == 200:
+        return {"status": "Booking assigned successfully"}
+    return {"status": "Booking not assigned"}
+
+# filter bookings by date
+@app.get("/supervisor/getBookings/{date}")
+async def get_bookings_super_date(date: str):
+    res = await getBookingsSuper()
+    ret = []
+    for i in res:
+        if i.date == date:
+            ret.append(i)
+    return {"bookings": ret}
+
+@app.get("/collector/getBookings/{employeeId}")
+async def get_bookings_collector(employeeId: str):
+    res = await getBookingsCollector(employeeId)
+    return {"bookings": res}
