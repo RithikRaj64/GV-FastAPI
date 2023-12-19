@@ -264,6 +264,8 @@ async def get_bookings_super():
     print(res)
     return {"bookings": res}
 
+@app.post("/supervisor/assignBooking")
+
 #  hello
 # @app.get("/collector/getBookings/{employeeId}")
 # async def get_bookings_collector(employeeId: str):

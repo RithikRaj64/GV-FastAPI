@@ -32,4 +32,4 @@ from methods.Community import (
     getTodaySchedule,
 )
 
-from methods.Pickup import bookPickup, getBookingsSuper
+from methods.Pickup import bookPickup, getBookingsSuper, assignBooking

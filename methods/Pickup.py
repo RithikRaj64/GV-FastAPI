@@ -25,7 +25,8 @@ async def getBookingsSuper():
 async def assignBooking(info):
     db = client["Database"]
     collection = db["Pickup"]
-    collection.find_one_and_update({"_id": info.id}, {"$set": {"status": "Assigned", "employeeId": info.employeeId}})
+    collection.find_one_and_update({"name" : info.name, "date" : info.date, "latitude" : info.latitude, "longitude" : info.longitude}, {"$set": {"status": "Assigned", "employeeId": info.employeeId}})
+    return 200
 
 async def getBookingsCollector(employeeId : str):
     db = client["Database"]
