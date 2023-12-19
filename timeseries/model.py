@@ -74,6 +74,21 @@ from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 
+# # Get the MongoDB Atlas connection URI
+uri = config("MONGO_URI")
+
+# # Create a new client and connect to the server
+client = MongoClient(uri)
+
+db = client["Database"]
+collection = db["TS"]
+
+cursor = collection.find({})
+data_list = list(cursor)
+
+# Convert data to Pandas DataFrame
+df = pd.DataFrame(data_list)
+
 # Assuming df is your time series DataFrame with 'date' and 'amount' columns
 # Make sure 'date' is in datetime format
 df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d")

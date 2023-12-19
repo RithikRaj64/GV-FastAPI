@@ -260,8 +260,11 @@ async def book_A_Pickup(info: Schedule):
     
 @app.get("/supervisor/getBookings")
 async def get_bookings_super():
-    return {"bookings": getBookingsSuper()}
+    res = await getBookingsSuper()
+    print(res)
+    return {"bookings": res}
 
-@app.get("/collector/getBookings/{employeeId}")
-async def get_bookings_collector(employeeId: str):
-    return {"bookings": getBookingsCollector(employeeId)}
+#  hello
+# @app.get("/collector/getBookings/{employeeId}")
+# async def get_bookings_collector(employeeId: str):
+#     return {"bookings": getBookingsCollector(employeeId)}
