@@ -26,6 +26,9 @@ from schemas import Reward
 from schemas import logs
 from schemas import Post
 
+# Chatbot
+from chatbot import chat
+
 app = FastAPI()
 
 app.add_middleware(
@@ -220,7 +223,7 @@ def get_employee_logs(employeeId : str):
     return {"logs" : res}
 
 @app.post("/community/addSchedule")
-def addPost(info: Schedule):
+def postSchedule(info: Schedule):
     res = addSchedule(info)
 
     if res == 200:
@@ -240,7 +243,7 @@ def addPost(info: Post):
 
 
 @app.get("/community/getAllPosts")
-def getAllPosts() -> list[Post]:
+def getAlPosts() -> list[Post]:
     return getAllPosts()
 
 
@@ -284,3 +287,8 @@ async def get_bookings_super_date(date: str):
 async def get_bookings_collector(employeeId: str):
     res = await getBookingsCollector(employeeId)
     return {"bookings": res}
+
+@app.post("/chatbot") 
+async def chatbot(query : str):
+    res = await chat(query)
+    return res

@@ -15,6 +15,8 @@ python-decouple = "^3.8"
 pillow = "^10.1.0"
 python-multipart = "^0.0.6"
 pyngrok = "^7.0.3"
+langchain = "^0.0.351"
+openai = "^1.5.0"
 
 
 [tool.pyright]
